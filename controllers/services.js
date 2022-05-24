@@ -40,10 +40,11 @@ module.exports.individualService = async (req, res, next) => {
     }
     if (!serviceProviders) {
         req.flash('error', `There isn't a service category ${req.params.id}`)
-        res.redirect(req.session.url || '/')
+        return res.redirect(req.session.url || '/')
+    } else {
+        req.session.url = '/services' + req.url;
+        res.render('services/list', { serviceProviders })
     }
-    req.session.url = '/services' + req.url;
-    res.render('services/list', { serviceProviders })
 }
 
 module.exports.individualProvider = async (req, res) => {
@@ -55,8 +56,11 @@ module.exports.individualProvider = async (req, res) => {
         }).populate("author");
     if (!serviceProviderOne) {
         req.flash('error', 'The service provider you are looking for does not exist');
-        if (req.session.url) { res.redirect(req.session.url) }
-        res.redirect('/services/all')
+        if (req.session.url) {
+            return res.redirect(req.session.url)
+        } else {
+            res.redirect('/services/all')
+        }
     }
     req.session.url = '/services' + req.url;
     res.render('services/show', { serviceProviderOne })
@@ -147,8 +151,10 @@ module.exports.updateService = async (req, res, next) => {
 
 module.exports.deleteService = async (req, res) => {
     const { id } = req.params;
-    await serviceProvider.findOneAndDelete({ url: id });
-    console.log(serviceProvider)
+    const serv = await serviceProvider.findOneAndDelete({ url: id });
+    for (let removeImg of serv.images) {
+            await cloudinary.uploader.destroy(removeImg.filename);
+        }
     req.flash('success', 'Service provider succesfully deleted!');
     res.redirect('/services/all')
 }
