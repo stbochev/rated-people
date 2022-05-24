@@ -148,6 +148,7 @@ module.exports.updateService = async (req, res, next) => {
 module.exports.deleteService = async (req, res) => {
     const { id } = req.params;
     await serviceProvider.findOneAndDelete({ url: id });
+    console.log(serviceProvider)
     req.flash('success', 'Service provider succesfully deleted!');
     res.redirect('/services/all')
 }

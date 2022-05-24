@@ -56,7 +56,7 @@ const seedDB = async () => {
                     filename: 'RatedPeople/jawc7baekz0ml38fzdmo',
                     }
                 ],
-            author: "61cd85e56f7571b1819c9567"
+            author: "628bbfc19dd35ba1847fb5ee"
         });
         await serv.save();
     }
