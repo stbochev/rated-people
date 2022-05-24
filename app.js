@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== "production") {
 
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const path = require("path");
 const userRoute = require('./routes/users');
 const mainRoute = require('./routes/main');
@@ -163,6 +163,7 @@ app.use((err, req, res, next) => {
   if(!err.message) err.message = "Something went wrong but I can't determine what exactly"
   res.status(statusCode).render('error', {err});
 })
+
 
 app.listen(port, () => {
   console.log(`RatedPeople listening at ${port}`)

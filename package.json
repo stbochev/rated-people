@@ -4,7 +4,8 @@
   "description": "Building this app from start to end as a project to practice Node, Express, JS etc.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
