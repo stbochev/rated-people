@@ -4,7 +4,7 @@ const Service = service.Service;
 const data = require('./gb.json');
 const { priceRangeArray, nameA, nameB, categoryArray } = require('./seedHelp.js')
 
-mongoose.connect('mongodb://localhost:27017/rated-people');
+mongoose.connect('mongodb+srv://RatedPeople:2pnpE8HibM91lmRE@cluster0.m1rlj.mongodb.net/?retryWrites=true&w=majority');
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
