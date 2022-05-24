@@ -1,0 +1,104 @@
+<% layout('/layouts/boilerplate')  -%>
+<% block('title').replace('New Provider Form') %>
+<% block('head').append(`
+    <link rel="stylesheet" href="/stylesheets/styles-form.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+`) %>
+
+<div class="body-form">
+
+    <h1>New Provider Form</h1>
+    <p class="subtitle">Thank you for taking the time to help me improve my web development services</p>
+
+    <section>
+        <form action="/services" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+            <div class="section">
+                <label for="title">Title</label>
+                <input class="form-control" type="text" name="serviceProvider[title]" id="title" placeholder="Enter your name" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+
+            <div class="section">
+                <label for="location">Location</label>
+                <input  class="form-control"type="text" name="serviceProvider[location]" id="title" placeholder="Enter your town" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="section">
+                <label for="images">Upload image</label>
+                <input class="form-control" type="file" name="image" id="images" multiple>
+            </div>
+
+            <div class="section">
+                <label for="category">Choose the service category that suits you best</label>
+                <select class="form-select" name="serviceProvider[serviceCategory][slug]" id="category" required>
+                    <option value="" disabled selected>Select Current Category</option>
+                    <% for (category of serviceCategory) {%> 
+                    <option value="<%= category.slug %>"><%= category.name %></option>
+                    <% } %> 
+                </select>
+            </div>
+
+            <div class="section">
+                <p>Would you describe the price range of your services?</p>
+                <div class="option">
+                    <input type="radio" id="cheap" value="cheap" name="serviceProvider[priceRange]" checked>
+                    <label for="cheap">Cheap</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="low" value="low" name="serviceProvider[priceRange]">
+                    <label for="low">Low</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="medium" value="medium" name="serviceProvider[priceRange]">
+                    <label for="medium">Medium</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="premium" value="premium" name="serviceProvider[priceRange]">
+                    <label for="premium">Premium</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="high" value="high" name="serviceProvider[priceRange]">
+                    <label for="high">High</label>
+                </div>
+            </div>
+
+            <div class="section">
+                <label for="description">Description of your services</label>
+                <textarea class="form-control" name="serviceProvider[description]" id="description" placeholder="Write your description here..."></textarea>
+            </div>
+            <div class="section">
+                <button type="submit" id="submit">Submit</button>
+            </div>
+
+        </form>
+    </section>
+
+</div>
+
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>

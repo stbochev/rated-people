@@ -1,0 +1,132 @@
+<% layout('/layouts/boilerplate')  -%>
+<% block('title').replace('Edit Provider Form') %>
+<% block('head').append(`
+    <link rel="stylesheet" href="/stylesheets/styles-form.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+`) %>
+
+<div class="body-form">
+
+    <h1>New Provider Form</h1>
+    <p class="subtitle">Thank you for taking the time to help me improve my web development services</p>
+
+    <section>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+               <a href="/services/show/<%= serviceProviderOne.url %> " class="btn btn-danger">Back To Provider</a>
+        </div>
+        <form action="/services/show/<%= serviceProviderOne.url %>?_method=PUT" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
+            <div class="section">
+                <label for="title">Title</label>
+                <input class="form-control" type="text" name="serviceProvider[title]" id="title" placeholder="Enter your name" value="<%= serviceProviderOne.title %>" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+
+            <div class="section">
+                <label for="location">Location</label>
+                <input class="form-control" type="text" name="serviceProvider[location]" id="title" placeholder="Enter your town" value="<%= serviceProviderOne.location %>" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="section">
+                <label for="images">Add more images</label>
+                <input class="form-control" type="file" name="image" id="images" multiple>
+            </div>
+            <div class="row">
+                <% for (let image of serviceProviderOne.images) {%>
+                    <div class="col-6 col-md-3 mt-2">
+                        <img src="<%= image.thumb %> " class="img-thumbnail image-preview" alt="...">
+                        <div class="form-check-inline">
+                            <input type="checkbox" id="<%=image._id%>" name="deleteImages[]" value="<%= image.filename %>">
+                        </div>
+                        <label for="<%=image._id%>">Delete?</label>
+                    </div>
+                <% } %>
+            </div>
+
+            <!-- <div class="section">
+                <label for="image-text">Image Alt - Title</label>
+                <input class="form-control" type="text" name="serviceProvider[images[0].filename]" id="image-text" placeholder="Enter image alt" value=" serviceProviderOne.images[0].filename %>">
+            </div> -->
+
+            <div class="section">
+                <label for="category">Choose the service category that suits you best</label>
+                <select class="form-select" name="serviceProvider[serviceCategory][slug]" id="category" required>
+
+                    <% for (category of serviceCategory) {
+                        if (serviceProviderOne.serviceCategory.slug === category.slug) { %>
+                            <option value="<%= category.slug %>" selected><%= category.name %></option>
+                       <% } else { %>
+                            <option value="<%= category.slug %>"><%= category.name %></option>
+                        <% } }%>
+
+                </select>
+            </div>
+
+            <div class="section">
+                <p>Would you describe the price range of your services?</p>
+               <% const prices = [
+                        {name: "cheap",
+                        visible: "Cheap"},
+                        {name:"low", 
+                        visible: "Low"},
+                        {name: "medium",
+                        visible: "Medium"},
+                        {name:"premium", 
+                        visible: "Premium"},
+                        {name:"high", 
+                        visible: "High"}]
+                    for (price of prices) {
+                        if (serviceProviderOne.priceRange === price.name) { %>
+                <div class="option"> 
+                    <input type="radio" id="<%= price.name%>" value="<%= price.name%>" name="serviceProvider[priceRange]" checked>
+                    <label for="<%= price.name%>"><%= price.visible%></label>
+                </div>
+                     <%   } else { %>
+                <div class="option"> 
+                    <input type="radio" id="<%= price.name%>" value="<%= price.name%>" name="serviceProvider[priceRange]" >
+                    <label for="<%= price.name%>"><%= price.visible%></label>
+                </div>
+                     <% }} %>
+            </div>
+
+            <div class="section">
+                <label for="description">Description of your services</label>
+                <textarea class="form-control" name="serviceProvider[description]" id="description" placeholder="Write your description here..." ><%= serviceProviderOne.description %></textarea>
+            </div>
+            <div class="section">
+                <button type="submit" id="submit">Submit</button>
+            </div>
+
+        </form>
+    </section>
+
+</div>
+
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>
+
+    

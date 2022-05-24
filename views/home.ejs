@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<% layout('/layouts/boilerplate')  -%>
+<% block('title').replace('Find You Local Tradesperson') %>
+
+<header class="container-fluid p-0 header-home">
+        <div class="row align-items-center h-100 m-0">
+            <div class="col-10 offset-1 col-sm-8 offset-sm-2 col-lg-8 offset-lg-2">
+                <h1 class="fw-bold lh-base text-center">Find a local tradesperson for your job</h1>
+                <p class="fw-bold fs-5 text-center">Post your job for free. Match to tradespeople, get quotes and read reviews.</p>
+                <form action="" method="post">
+                    <div class="row">
+                        <div class="col-md-8 col-lg-7 mb-3 mb-md-0">
+                            <div class="form-floating">
+                                <select name="trade" id="type-trade" class="form-select" required>
+                                    <% for (category of serviceCategory) {%> 
+                                    <option value="<%= category.slug %>"><%= category.name %></option>
+                                    <% } %> 
+                                </select>
+                                <label for="type-trade" class="form-label">What type of tradesperson do you need?</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-5 d-grid">
+                            <button class="btn btn-success fs-5">Next step ></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+</header>
+<section class="container px-5 py-5 mb-4">
+    <h2 class="fw-bold text-center header-underlined">How our services work</h2>
+
+    <div class="row px-5 justify-content-center align-items-center">
+        <div class="col-lg-4 position-relative my-5 my-sm-4">
+            <p class="number-home">1</p>
+            <div class="how-work ps-3">
+                <h3>Create a job for free</h3>
+                <p class="text-muted fw-bold">Tell us what you need</p>
+            </div>
+        </div>
+        <div class="col-lg-4 position-relative my-5 my-sm-4">
+            <p class="number-home">2</p>
+            <div class="how-work ps-3">
+                <h3>Get a quote</h3>
+                <p class="text-muted fw-bold">Tradespeople get in touch</p>
+            </div>
+        </div>
+        <div class="col-lg-4 position-relative my-5 my-sm-4">
+            <p class="number-home">3</p>
+            <div class="how-work ps-3">
+                <h3>Rate and review</h3>
+                <p class="text-muted fw-bold">Job done - leave feedback</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="container px-5 py-5 mb-4">
+    <h2 class="fw-bold text-center header-underlined">Our most popular jobs</h2>
+
+    <div class="row justify-content-center align-items-center">
+
+        <% for ( let i=0; i<6; i++) {%> 
+        <div class="col-md-6 col-lg-4 mb-3 position-relative">
+            <a href="/services/<%= serviceCategory[i].slug %> " class="text-decoration-none">
+                <div class="card shadow bg-body rounded transform-card" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-3 align-items-center d-flex">
+                            <img src="<%= serviceCategory[i].imageURL  %> " class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-9 align-items-center d-flex">
+                            <div class="card-body">
+                                <small class="card-text text-success fw-bold"><%= serviceCategory[i].name %></small>
+                                <h5 class="card-title text-dark"><%= serviceCategory[i].description %></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <% } %> 
+
+
+    
+        
+    </div>
+</section>

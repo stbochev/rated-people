@@ -1,0 +1,49 @@
+<% layout('/layouts/boilerplate')  -%>
+<% block('title').replace('List of all service providers')
+block('head').append(`<link rel="stylesheet" href="/stylesheets/stars.css">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css' rel='stylesheet' />`) %>
+
+
+
+    <h1 class="mb-3 px-4">List of all service providers</h1>
+    <div class="row m-0">
+        <div class="col-md-8">
+            <% for (let serviceProvider of serviceProviders) {%>
+                <div class="card mb-3 ms-3 shadow">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="image-horizontal-frame">
+                                <% if(serviceProvider.images.length > 0) {%> 
+                                <img src="<%= serviceProvider.images[0].list %>" alt="default" class="img-fluid image-horizontal">
+                                <% } else { %>
+                                <img src="https://www.build-review.com/wp-content/uploads/2019/07/MOST-TRUSTED-BUILDER.png" alt="default image" class="img-fluid image-horizontal">
+                                <% } %>   
+                            </div>  
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="/services/show/<%= serviceProvider.url %>"><%= serviceProvider.title %></a> - <%= serviceProvider.serviceCategory.name %></h5>
+                                <p class="card-text"><%= serviceProvider.description %></p>
+                                <p class="card-text ">
+                                    <small class="text-muted"><%= serviceProvider.location %></small>
+                                </p>
+                                <a href="/services/show/<%= serviceProvider.url %>" class="btn btn-primary">View Provider</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+        <div class="col-md-4 order-first order-md-last">
+            <div id="map" class="shadow-lg p-2"></div>
+        </div>
+    </div>
+    
+
+    <script>
+        const mapToken = '<%- process.env.MAPBOX_TOKEN %>';
+        const providers = {features: <%- JSON.stringify(serviceProviders) %>};
+    </script>
+    
+    <script src="/javascripts/cluster-map.js"></script>

@@ -1,0 +1,176 @@
+<% layout('/layouts/boilerplate')
+    block('title').replace(serviceProviderOne.title)
+    block('head').append(`<link rel="stylesheet" href="/stylesheets/stars.css">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css' rel='stylesheet' />`) %>
+
+<div class="row my-3 mx-0">
+
+    <div class="col-12 col-sm-6">
+        
+        <div class="card mb-3">
+
+            <% if(serviceProviderOne.images && serviceProviderOne.images.length > 1) {%> 
+            <div id="carouselControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <% for (let i=0; i<serviceProviderOne.images.length; i++) {%> 
+                    <div class="carousel-item image-horizontal-frame-50 <%= i===0 ? 'active': '' %> ">
+                    <img src="<%= serviceProviderOne.images[i].show %> " class="d-block image-show" alt="<%= serviceProviderOne.title %>-header-<%=i%>">
+                    </div>
+                    <% } %> 
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            <% } else if(serviceProviderOne.images.length === 1)  {%> 
+                <img class="card-img-top" src="<%= serviceProviderOne.images[0].show %>" alt="<%= serviceProviderOne.title %>-header">
+            <% } else { %> 
+                <img class="card-img-top" src="https://www.build-review.com/wp-content/uploads/2019/07/MOST-TRUSTED-BUILDER.png" alt="default image" class="img-fluid">
+            <% } %>
+            
+            <div class="card-body">
+                <h5 class="card-title"><%= serviceProviderOne.title %></h5>
+                <p class="card-text"><%= serviceProviderOne.description %></p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-muted"><%= serviceProviderOne.location %></li>
+                <li class="list-group-item">Category of service: <%= serviceProviderOne.serviceCategory.name%></li>
+                <li class="list-group-item">Price range of services: <%= serviceProviderOne.priceRange[0].toUpperCase() + serviceProviderOne.priceRange.slice(1) %></li>
+            </ul>
+            <% if(currentUser && serviceProviderOne.author.equals(currentUser._id)) {%>
+            <div class="card-body">
+                <a href="/services/show/<%= serviceProviderOne.url %>/edit" class="card-link btn btn-success">Edit</a>
+                <form class="d-inline" action="/services/show/<%= serviceProviderOne.url %>?_method=DELETE" method="post">
+                <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+            <% } %> 
+        </div>
+    </div>
+    <div class="col-12 col-sm-6">
+        <div id='map' style='height: 300px;' class="mb-3 shadow rounded"></div>
+        <% if (currentUser) { %> 
+        <h2>Post A Reviews</h2>
+  
+        <form action="/services/show/<%= serviceProviderOne.url %>/reviews" method="post" class="mb-3 needs-validation row" novalidate>
+            <div class="mb-3 col-sm-6 col-12">
+                <fieldset class="starability-basic">
+                <legend class="form-label">Reliability:</legend>
+                <input type="radio" id="no-rate" class="input-no-rate" name="review[reliability]" value="0" checked aria-label="No rating." />
+                <input type="radio" id="reliability1" name="review[reliability]" value="1" />
+                <label for="reliability1" title="Terrible">1 star</label>
+                <input type="radio" id="reliability2" name="review[reliability]" value="2" />
+                <label for="reliability2" title="Not good">2 stars</label>
+                <input type="radio" id="reliability3" name="review[reliability]" value="3" />
+                <label for="reliability3" title="Average">3 stars</label>
+                <input type="radio" id="reliability4" name="review[reliability]" value="4" />
+                <label for="reliability4" title="Very good">4 stars</label>
+                <input type="radio" id="reliability5" name="review[reliability]" value="5" />
+                <label for="reliability5" title="Amazing">5 stars</label>
+                </fieldset>
+            </div>
+            <div class="mb-3 col-sm-6 col-12">
+                <fieldset class="starability-basic">
+                <legend class="form-label">Courtesy:</legend>
+                <input type="radio" id="no-rate" class="input-no-rate" name="review[courtesy]" value="0" checked aria-label="No rating." />
+                <input type="radio" id="courtesy1" name="review[courtesy]" value="1" />
+                <label for="courtesy1" title="Terrible">1 star</label>
+                <input type="radio" id="courtesy2" name="review[courtesy]" value="2" />
+                <label for="courtesy2" title="Not good">2 stars</label>
+                <input type="radio" id="courtesy3" name="review[courtesy]" value="3" />
+                <label for="courtesy3" title="Average">3 stars</label>
+                <input type="radio" id="courtesy4" name="review[courtesy]" value="4" />
+                <label for="courtesy4" title="Very good">4 stars</label>
+                <input type="radio" id="courtesy5" name="review[courtesy]" value="5" />
+                <label for="courtesy5" title="Amazing">5 stars</label>
+                </fieldset>
+            </div>
+            <div class="mb-3 col-sm-6 col-12">
+                <fieldset class="starability-basic">
+                <legend class="form-label">Tidiness:</legend>
+                <input type="radio" id="no-rate" class="input-no-rate" name="review[tidiness]" value="0" checked aria-label="No rating." />
+                <input type="radio" id="tidiness1" name="review[tidiness]" value="1" />
+                <label for="tidiness1" title="Terrible">1 star</label>
+                <input type="radio" id="tidiness2" name="review[tidiness]" value="2" />
+                <label for="tidiness2" title="Not good">2 stars</label>
+                <input type="radio" id="tidiness3" name="review[tidiness]" value="3" />
+                <label for="tidiness3" title="Average">3 stars</label>
+                <input type="radio" id="tidiness4" name="review[tidiness]" value="4" />
+                <label for="tidiness4" title="Very good">4 stars</label>
+                <input type="radio" id="tidiness5" name="review[tidiness]" value="5" />
+                <label for="tidiness5" title="Amazing">5 stars</label>
+                </fieldset>
+            </div>
+            <div class="mb-3 col-sm-6 col-12">
+                <fieldset class="starability-basic">
+                <legend class="form-label">Workmanship:</legend>
+                <input type="radio" id="no-rate" class="input-no-rate" name="review[workmanship]" value="0" checked aria-label="No rating." />
+                <input type="radio" id="workmanship1" name="review[workmanship]" value="1" />
+                <label for="workmanship1" title="Terrible">1 star</label>
+                <input type="radio" id="workmanship2" name="review[workmanship]" value="2" />
+                <label for="workmanship2" title="Not good">2 stars</label>
+                <input type="radio" id="workmanship3" name="review[workmanship]" value="3" />
+                <label for="workmanship3" title="Average">3 stars</label>
+                <input type="radio" id="workmanship4" name="review[workmanship]" value="4" />
+                <label for="workmanship4" title="Very good">4 stars</label>
+                <input type="radio" id="workmanship5" name="review[workmanship]" value="5" />
+                <label for="workmanship5" title="Amazing">5 stars</label>
+                </fieldset>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="text">Leave your review here</label>
+                <textarea class="form-control" name="review[text]" id="text" placeholder="Write your review here..." rows="4" required></textarea>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+                <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+        <% } else { %>
+            <h5 class="have-to-log">To Post A Reviews you have to be logged in</h5>
+            <% } %> 
+        <h2>Left Reviews</h2>
+        <% for (review of serviceProviderOne.reviews) {
+            const reviewTen = (review.reliability + review.courtesy + review.tidiness + review.workmanship)/4;
+            const stars = Math.round(reviewTen)
+            %>
+            <div class="card my-3">
+                <div class="card-body">
+                    <h5 class="card-title">Review by <%= review.author.username.charAt(0).toUpperCase() + review.author.username.slice(1) %></h5>
+                        <p class="starability-result" data-rating="<%= stars %>">
+                            Rated: <%= stars %> stars
+                        </p>
+                    <p class="card-text"><%= review.text %></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Reliability: <%= review.reliability %></li>
+                    <li class="list-group-item">Courtesy: <%= review.courtesy %></li>
+                    <li class="list-group-item">Tidiness: <%= review.tidiness %></li>
+                    <li class="list-group-item">Workmanship: <%= review.workmanship %></li>
+                </ul>
+                 <% if(currentUser && review.author.equals(currentUser._id)) {%>
+                <div class="card-body">
+                    <form class="d-inline" action="/services/show/<%= serviceProviderOne.url %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+                <% } %> 
+        </div>
+        <% } %> 
+    </div>
+</div>
+
+<script>
+     const mapToken = '<%- process.env.MAPBOX_TOKEN %>';
+     const service = <%- JSON.stringify(serviceProviderOne) %>;
+</script>
+
+<script src="/javascripts/map.js"></script>
+
+    

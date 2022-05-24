@@ -1,0 +1,68 @@
+<% layout('/layouts/boilerplate')  -%>
+<% block('title').replace('Register new User') %>
+<% block('head').append(`
+    <link rel="stylesheet" href="/stylesheets/styles-form.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+`) %>
+
+<div class="body-form">
+
+    <h1>Register New User</h1>
+    <p class="subtitle">Thank you for taking the time to help me improve my web development services</p>
+
+    <section>
+        <form action="/users/register" method="post" class="needs-validation" novalidate>
+            <div class="section">
+                <label for="username">Username</label>
+                <input class="form-control" type="text" name="username" id="username" placeholder="Enter your username" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+
+            <div class="section">
+                <label for="email">Email</label>
+                <input  class="form-control"type="email" name="email" id="email" placeholder="Enter your email" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="section">
+                <label for="password">Password</label>
+                <input  class="form-control" type="password" name="password" id="password" placeholder="Enter your password" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="section">
+                <button type="submit" id="submit">Submit</button>
+            </div>
+
+        </form>
+    </section>
+
+</div>
+
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>
